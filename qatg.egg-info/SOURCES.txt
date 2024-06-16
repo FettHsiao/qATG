@@ -1,0 +1,13 @@
+README.md
+setup.cfg
+setup.py
+qatg/__init__.py
+qatg/qatgConfiguration.py
+qatg/qatgFault.py
+qatg/qatgMain.py
+qatg/qatgUtil.py
+qatg.egg-info/PKG-INFO
+qatg.egg-info/SOURCES.txt
+qatg.egg-info/dependency_links.txt
+qatg.egg-info/requires.txt
+qatg.egg-info/top_level.txt

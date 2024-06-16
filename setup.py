@@ -13,7 +13,8 @@ setup(
 					  'pylatexenc>=2.10',
 					  'scipy>=1.7.1',
                       'ipympl>=0.9.2',
-					  'numpy>=1.20.3'
+					  'numpy>=1.20.3',
+                      'qiskit-ibm-runtime>=0.24.0'
                       ],
 
 )

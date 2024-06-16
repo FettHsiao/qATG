@@ -10,6 +10,7 @@ from qiskit_ibm_runtime.transpiler.passes.scheduling import DynamicCircuitInstru
 from qiskit_ibm_runtime.fake_provider import FakeJakartaV2
 from qiskit.compiler import schedule
 from qiskit_ibm_runtime import QiskitRuntimeService
+from qiskit_ibm_runtime.options import SimulatorOptions
 
 # QiskitRuntimeService.save_account(channel="ibm_quantum", token='6be65f0ec78a1145f69c8dfeda2633401927ed71e9f1e918705862fcec493605c0743c8fa3dc97ad4dfb45472097a4acc3e6ad34b4abf26c8a97193065b62929')
 # service = QiskitRuntimeService(instance="ibm-q/open/main")
@@ -25,7 +26,9 @@ backend = FakeJakartaV2()
 qc = transpile(qc, backend = backend)
 
 durations = DynamicCircuitInstructionDurations.from_backend(backend)
-print(durations)
+# print("-----------------------------------------------")
+# print(f"This is duration: \n{durations}\nDuration ends")
+# print("-----------------------------------------------")
 pm = generate_preset_pass_manager(optimization_level=1, backend=backend)
 pm.scheduling = PassManager([ALAPScheduleAnalysis(durations)])
 for instr, qargs, _ in qc.data:
@@ -37,7 +40,7 @@ scheduled_circuit = pm.run(transpiled_circuit)
 
 start_times = []
 data = []
-print(scheduled_circuit, transpiled_circuit)
+# print(f"This is scheduled_circuit: \n{scheduled_circuit}\nThis is transpiled_circuit: {transpiled_circuit}")
 for i in range(len(scheduled_circuit._op_start_times)):
     # data.append(scheduled_circuit.data[i])
     instr, qargs, cargs = scheduled_circuit.data[i]
@@ -50,7 +53,8 @@ for i in range(len(scheduled_circuit._op_start_times)):
             data.append((instr.name, instr.params, qargs[0]._index))
             start_times.append(scheduled_circuit.op_start_times[i][1])
 
-print(start_times, data)
+# print(start_times, data)
+# print(f"\nThis is start_time: {start_times}\n")
 
 start_time_groups = {}
 for i, start_time in enumerate(start_times):
@@ -59,7 +63,7 @@ for i, start_time in enumerate(start_times):
     start_time_groups[start_time].append(data[i])
 
 concurrent_gates = []
-print("start_time groups", start_time_groups)
+# print("\n\nstart_time groups\n", start_time_groups)
 for start_time, ops in start_time_groups.items():
     # qubits_involved = set()
     # for op in ops:
@@ -70,11 +74,13 @@ for start_time, ops in start_time_groups.items():
     if len(ops) > 1:
         concurrent_gates.append((start_time, ops))
 
-print("Concurrent gates on qubits 0 and 1:", concurrent_gates)
+# print("\n\nConcurrent gates on qubits 0 and 1:\n", concurrent_gates,"\n")
 for start_time, ops in concurrent_gates:
-    print(f"Time: {start_time}")
+    # print(f"Time: {start_time}")
     for op in ops:
         gate_name = op[0]
         params = op[1]
         qubits = op[2]
-        print(f"  Gate: {gate_name} on qubits {qubits} with params {params}")       
+        # print(f"  Gate: {gate_name} on qubits {qubits} with params {params}")       
+options =  SimulatorOptions()
+print(options)
